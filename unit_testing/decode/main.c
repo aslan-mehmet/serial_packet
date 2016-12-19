@@ -55,7 +55,6 @@ void sp_handler(void *vptr, uint16_t addr)
 
         printf("\n");
 
-        sp_reg &= ~sp_rx_lock;
 }
 
 void sp_error(uint8_t n)

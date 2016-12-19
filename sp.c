@@ -265,7 +265,6 @@ static void process_rx(void)
 
         sp_error(SPE_SUCCESS);
 
-        sp_reg |= sp_rx_lock;
 	sp_handler(p, addr);
 
         free(p);
