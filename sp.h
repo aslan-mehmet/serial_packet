@@ -12,14 +12,14 @@
 
 #include <stdint.h>
 
-#define PCL 12			/* packet content len for 8 byte of data */
-#define MPL (4 + PCL*2)		/* max packet len */
+#define PCL 12			/* packet content len for size + 8 byte + addr + checksum */
+#define MPL 28          	/* max packet len (4 + PCL*2) */
 #define FRXS 50			/* fifo rx size at least one packet must fit */
 
 /* serial packet errors that could happen
  * sp lib does not contain what to do when error happen
  * it just calls sp_error with an error code
- * it declared as a weak function
+ * sp_error declared as a weak function
  */
 #define SPE_SUCCESS 0
 #define SPE_UNDEF_SEQ 1
@@ -31,7 +31,7 @@
 #define SPE_FRX_FULL 7
 #define SPE_TX_FULL 8 		/* doesnt fit to MPL */
 
-extern uint8_t sp_reg;		/* in sp.c */
+extern uint8_t sp_reg;
 #define sp_tx_lock 1
 #define sp_rx_lock 2
 #define sp_start_rcvd 4
@@ -44,11 +44,11 @@ struct _spacket{
 typedef struct _spacket spacket;
 
 /* check it must return 0
- * otherwise it could not allocate memory space for internal buffers
+ * otherwise it could not allocate memory space for internal buffer
  */
-int sp_init(void);
-void sp_deinit(void);
-void sp_thread(void);
+int8_t sp_init(void);
+/* handle bytes in fifo rx non-blocking */
+void sp_decode(void);
 /* any two packets can't have same packet addr */
 /* data type can any of below. it is basically their size */
 #define UINT8_T 1
@@ -68,7 +68,6 @@ void spacket_init(uint8_t data_type, uint16_t packet_addr, spacket *p);
  * implicitly locks sp_tx_lock you have to unlock at sp_tx_send
  */
 int sp_encode(void *vptr, spacket packet);
-
 /* write to serial packet fifo rx
  * put uint8_t values from usart
  */
@@ -76,7 +75,7 @@ void sp_frx_put(uint8_t v);
 
 
 /* weak functions they must be declared before using lib */
-/* impilicitly locks sp_tx_lock dont forget to unlock */
+/* sp_tx_lock implicity locked, dont forget to unlock */
 int sp_tx_send(uint8_t *ptr, uint8_t len) __attribute__ ((weak));
 /* handle received packet and unlock sp_rx_lock */
 void sp_handler(void *vptr, uint16_t addr) __attribute__ ((weak));

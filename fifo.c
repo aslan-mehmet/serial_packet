@@ -11,15 +11,20 @@
 uint8_t number_of_data_fifo(fifo *s);
 int8_t is_fifo_full(fifo *s);
 
-void create_fifo(fifo *s, uint8_t len)
+int8_t init_fifo(fifo *s, uint8_t len)
 {
 	s->tail = 0;
 	s->head = 0;
 	s->len = len + 1;
 	s->buf = (uint8_t *) malloc(s->len);
+
+	if (s->buf == NULL)
+		return -1;
+
+	return 0;
 }
 
-void free_fifo(fifo *s)
+void deinit_fifo(fifo *s)
 {
 	free(s->buf);
 }

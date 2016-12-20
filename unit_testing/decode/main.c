@@ -22,9 +22,7 @@ int main(int argc, char **argv)
 		sp_frx_put(u);
 	}
 
-	sp_thread();
-
-	sp_deinit();
+	sp_decode();
 	
 	return 0;
 }
@@ -54,6 +52,8 @@ void sp_handler(void *vptr, uint16_t addr)
         }
 
         printf("\n");
+
+	sp_reg &= ~sp_rx_lock;
 
 }
 

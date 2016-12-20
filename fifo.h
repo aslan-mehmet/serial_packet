@@ -20,8 +20,8 @@ struct my_fifo{
 
 typedef struct my_fifo fifo;
 
-void create_fifo(fifo *s, uint8_t len);
-void free_fifo(fifo *s);
+int8_t init_fifo(fifo *s, uint8_t len);
+void deinit_fifo(fifo *s);
 
 int8_t write_fifo(fifo *s, uint8_t d);
 int16_t read_fifo(fifo *s);
