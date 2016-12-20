@@ -26,7 +26,6 @@ static uint8_t tx[MPL];
 
 static uint8_t rx[PCL];
 static uint8_t rxi = 0;
-static uint8_t last_get = 0;
 
 static fifo *pfrx;
 
