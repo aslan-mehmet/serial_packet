@@ -16,6 +16,11 @@ int main(void)
 	
 	sp_encode(&v, my_packet);
 
+        spacket d_packet;
+        spacket_init(DOUBLE, 21, &d_packet);
+        double d = 0.123456789123;
+        sp_encode(&d, d_packet);
+
 	return 0;
 }
 
