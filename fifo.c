@@ -8,7 +8,6 @@
 
 #include "fifo.h"
 
-uint8_t number_of_data_fifo(fifo *s);
 int8_t is_fifo_full(fifo *s);
 
 int8_t init_fifo(fifo *s, uint8_t len)
@@ -44,7 +43,7 @@ int8_t write_fifo(fifo *s, uint8_t d)
 
 int16_t read_fifo(fifo *s)
 {
-	if (number_of_data_fifo(s)) {
+	if (s->tail != s->head) {
 		uint8_t tmp = s->buf[s->tail++];
 
 		if (s->tail == s->len)
@@ -76,12 +75,5 @@ int8_t is_fifo_full(fifo *s)
         }
 
         return 0;
-}
-
-uint8_t number_of_data_fifo(fifo *s)
-{
-	uint16_t h = s->head < s->tail ? (s->head+s->len) : s->head;
-
-	return (h - s->tail);
 }
 
