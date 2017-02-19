@@ -16,12 +16,11 @@ how to use
         you are good to go
 	
 2. initialaze sp with sp_init func
-        sp has internal fifo for receiving bytes.
-        normally sp_init returns 0, otherwise fifo allocation unsuccessful.
+        sp has internal fifo for receiving bytes. also checks dword_bfr memory
+	address alignment. normally sp_init returns 0, otherwise problem.
 
 3. how to send a packet
         write hardware dependent sp_tx_send function.
-        see the example in ./unit_testing/encode
         encoding packet implicitly locks sp_tx_lock, unlock when done
 
 4. how to receive a packet
@@ -29,10 +28,10 @@ how to use
         put sp_decode func in your main loop, it works non-blocking
         when whole packet received sp_decode calls sp_handler
         do data type pointer casting, when you save variable unlock sp_rx_lock
-        example ./unit_testing/decode
 
 5. handling error
-        when error occurs sp_error func called with error number
+        when a packet received, sp_error also called to indicate decoding success
+	or error. error codes in header file.
 
 single packet
         <start(2)><content(n)><stop(2)>, (size)

@@ -2,11 +2,8 @@
 #include <stdio.h>
 #include <stdint.h>
 
-/* float value:0.123456 addr:2
- * ./a.out 96 1 4 80 d6 fc 3d 2 0 95 96 2
- *
- * uint32:0x12345678 addr:1
- * ./a.out 96 1 4 78 56 34 12 1 0 9 96 2
+/* float value:9.8 addr:1
+ * ./a.out 96 1 4 cd cc 1c 41 1 0 5d 96 2
  */
 int main(int argc, char **argv)
 {
@@ -39,11 +36,7 @@ void sp_handler(void *vptr, uint16_t addr)
         printf("addr:%d ", addr);
 
         switch (addr) {
-        case 1:
-                u32 = *((uint32_t *) vptr);
-                printf("u32:0x%x", u32);
-                break;
-        case 2:         /* float */
+        case 1:         /* float */
                 f = *((float *) vptr);
                 printf("float:%f", f);
                 break;

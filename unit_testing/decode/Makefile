@@ -1,2 +1,2 @@
 a.out:
-	gcc -iquote ../.. *.c ../../*.c
+	gcc -g -iquote ../.. *.c ../../*.c

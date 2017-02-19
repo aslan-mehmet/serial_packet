@@ -7,19 +7,10 @@ int main(void)
 		while (1)
 			;
 
-	spacket my_packet;
 
-	spacket_init(UINT32_T, 1, &my_packet);
-
-
-	uint32_t v = 0x12345678;
+	float f = 9.8;
 	
-	sp_encode(&v, my_packet);
-
-        spacket d_packet;
-        spacket_init(DOUBLE, 21, &d_packet);
-        double d = 0.123456789123;
-        sp_encode(&d, d_packet);
+	sp_encode(&f, FLOAT, 1);
 
 	return 0;
 }
