@@ -40,6 +40,10 @@ void sp_handler(void *vptr, uint16_t addr)
                 f = *((float *) vptr);
                 printf("float:%f", f);
                 break;
+	case 2:
+		u32 = *((uint32_t *) vptr);
+		printf("u32:%d", u32);
+		break;
         default:
                 sp_error(SPE_UNDEF_ADDR);
         }
