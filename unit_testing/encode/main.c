@@ -1,31 +1,23 @@
-#include "sp.h"
+#include "serial.h"
 #include <stdio.h>
 
 int main(void)
 {
-	if (sp_init())
-		while (1)
-			;
+	serial_init();
 
+	uint32_t u32 = 0x12345678;
+	serial_encode(0x32, sizeof(u32), &u32);
 
-	float f = 9.8;
-	
-	sp_encode(&f, FLOAT, 1);
-
+	printf("expected\n");
+	printf("5c 01 32 04 78 56 34 12 cs 5c 02\n");  
+	while (1) {
+		serial_loop();
+	}
+		
 	return 0;
 }
 
-int sp_tx_send(uint8_t *ptr, uint8_t len)
+void serial_send_byte(uint8_t byt)
 {
-	for (int i = 0; i < len; ++i)
-		printf("%x ", ptr[i]);
-
-	printf("\n");
-	sp_reg &= ~sp_tx_lock;
+	printf("%x\n", byt);
 }
-
-void sp_handler(void *vptr, uint16_t addr)
-{}
-
-void sp_error(uint8_t n)
-{}

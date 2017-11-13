@@ -1,2 +1,4 @@
-a.out:
-	gcc -g -iquote ../.. *.c ../../*.c
+all:
+	gcc -g *.c
+clean:
+	rm a.out

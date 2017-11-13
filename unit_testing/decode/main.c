@@ -1,60 +1,24 @@
-#include "sp.h"
+#include "serial.h"
 #include <stdio.h>
-#include <stdint.h>
-
-/* float value:9.8 addr:1
- * ./a.out 96 1 4 cd cc 1c 41 1 0 5d 96 2
- */
-int main(int argc, char **argv)
+int main(void)
 {
-	uint32_t u;
-	
-	if (sp_init())
-                while (1)
-                        ;
+	serial_init();
+	uint8_t arr[] = {0x5c, 0x01, 0x32, 0x04, 0x78, 0x56, 0x34, 0x12, 0x08, 0x5c, 0x02};
 
-	for (int i = 1; i < argc; ++i) {
-		sscanf(argv[i], "%x", &u);
-
-		sp_frx_put(u);
+	for (int i = 0; i < 11; ++i) {
+		serial_receives_byte(arr[i]);
 	}
-
-	sp_decode();
 	
+	while (1) {
+		serial_loop();
+	}
 	return 0;
 }
 
-int sp_tx_send(uint8_t *ptr, uint8_t len)
+void serial_payload_handler(uint8_t payload_id, uint8_t payload_size, void *payload)
 {
-}
+	uint32_t data;
+	safe_memory_copy(&data, payload, payload_size);
 
-void sp_handler(void *vptr, uint16_t addr)
-{
-        float f;
-        uint32_t u32;
-
-        printf("addr:%d ", addr);
-
-        switch (addr) {
-        case 1:         /* float */
-                f = *((float *) vptr);
-                printf("float:%f", f);
-                break;
-	case 2:
-		u32 = *((uint32_t *) vptr);
-		printf("u32:%d", u32);
-		break;
-        default:
-                sp_error(SPE_UNDEF_ADDR);
-        }
-
-        printf("\n");
-
-	sp_reg &= ~sp_rx_lock;
-
-}
-
-void sp_error(uint8_t n)
-{
-        printf("err code:%d\n", n);
+	printf("pid:%x psize:%x p:%x\n", payload_id, payload_size, data);
 }
