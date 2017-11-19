@@ -4,6 +4,7 @@
 #include <stdint.h>
 #define SERIAL_RX_BUF_SIZE 60
 #define SERIAL_PAYLOAD_BUF_SIZE 60
+#define CONTENT_BUF_SIZE 60
 
 void serial_init(void);
 void serial_loop(void);

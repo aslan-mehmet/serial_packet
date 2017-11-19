@@ -3,14 +3,7 @@
  * @author Mehmet ASLAN
  * @date November 12, 2017
  * @copyright Gnu General Public License Version 3 or Later
- * @brief 
- * fifo implementation with circular buffer\n
- * How to Use\n
- * create fifo data type\n
- * create a buffer\n
- * set fifo size and buf\n
- * init w/ init_fifo\n
- * done
+ * @brief fifo implementation with circular buffer
  */
 #include "fifo.h"
 

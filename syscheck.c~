@@ -1,6 +1,4 @@
-#include <stdlib.h>
 #include <stdint.h>
-#include <stdio.h>
 
 int8_t sys_check(void)
 {
@@ -56,15 +54,3 @@ int8_t sys_check(void)
 	/* also memory allows byte access */
 	return 0;
 }
-
-int main(void)
-{
-	if (sys_check()) {
-		puts("unknown system gotta implement parser");
-	} else {
-		puts("hunky dory");
-	}
-
-	return 0;
-}
-

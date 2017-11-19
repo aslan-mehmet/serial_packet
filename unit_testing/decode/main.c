@@ -8,6 +8,14 @@ int main(void)
 	for (int i = 0; i < 11; ++i) {
 		serial_receives_byte(arr[i]);
 	}
+
+	for (int i = 0; i < 11; ++i) {
+		serial_receives_byte(arr[i]);
+	}
+
+	for (int i = 0; i < 11; ++i) {
+		serial_receives_byte(arr[i]);
+	}
 	
 	while (1) {
 		serial_loop();

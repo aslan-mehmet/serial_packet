@@ -1,5 +1,5 @@
 /**
- * @file fifo.h
+ * @file serial.h
  * @author Mehmet ASLAN
  * @date November 19, 2017
  * @copyright Gnu General Public License Version 3 or Later
@@ -16,11 +16,28 @@
 #define __SERIAL_H
 
 #include <stdint.h>
-/* 
- * @brief default 60, allowed to change
- * @attention must be bigger than single packet size, else packet always corrupted
+/** 
+ * @brief
+ * allowed to change, when serial_encode called puts into this buffer
+ * @attention
+ * actual size this_val - 1\n
+ * must be bigger than single packet size, else packet always corrupted
  */
 #define SERIAL_TX_BUF_SIZE 60
+/** 
+ * @brief
+ * serial_receives_byte puts into this buffer 
+ * @attention
+ * actual size this_val - 1
+ */
+#define SERIAL_RX_BUF_SIZE 60
+/** @brief payload pointer size in serial_payload_handler */
+#define SERIAL_PAYLOAD_BUF_SIZE 60
+/** 
+ * @brief PAYLOAD_ID(1) PAYLOAD_SIZE(1) PAYLOAD(PAYLOAD_SIZE) CHECKSUM(1) defined as content
+ * @attention above must fit into buffer, adjust according to PAYLOAD_SIZE
+ */
+#define CONTENT_BUF_SIZE 60
 
 /**
  * @brief
@@ -33,10 +50,12 @@ void serial_init(void);
  * @brief packages data w/ given parameters and puts into tx buffer 
  */
 void serial_encode(uint8_t payload_id, uint8_t payload_size, void *payload_ptr);
+/** @brief when hardware received byte, pass w/ this function to serial  */
+void serial_receives_byte(uint8_t byt);
 /** 
  * @brief
  * put this into your main loop\n
- * handles received bytes in rx buffer
+ * handles received bytes in rx buffer\n
  * also sends bytes in tx buffer
  */
 void serial_loop(void);
@@ -47,5 +66,19 @@ void serial_loop(void);
  * user have to implement and for now only polling send supported(wait until byte goes)
  */
 void serial_send_byte(uint8_t byt) __attribute__ ((weak));
+/**
+ * @brief
+ * received bytes processed in serial loop, take your payload
+ * @attention
+ * when copy payload safe_memory_copy recommended
+ */
+void serial_payload_handler(uint8_t payload_id, uint8_t payload_size
+			    , void *payload) __attribute__ ((weak));
+/**
+ * @brief
+ * core may not allowed access 32 bit or 16 bit certain memory locations\n
+ * uses byte access
+ */
+void safe_memory_copy(void *dest, void *src, uint8_t size);
 
 #endif	/* __SERIAL_H */

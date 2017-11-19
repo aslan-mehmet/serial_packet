@@ -7,29 +7,29 @@
 /* if serial_escape_byte occured in data content, state not mean to escaped */
 #define SERIAL_NOT_ESCAPE ((uint8_t) 0x03)
 
-static fifo tx_fifo;
-static uint8_t tx_buf[SERIAL_TX_BUF_SIZE];
+static fifo _tx_fifo;
+static uint8_t _tx_buf[SERIAL_TX_BUF_SIZE];
 
 void serial_init(void)
 {
-	tx_fifo.buf = tx_buf;
-	tx_fifo.size = SERIAL_TX_BUF_SIZE;
-	init_fifo(&tx_fifo);
+	_tx_fifo.buf = _tx_buf;
+	_tx_fifo.size = SERIAL_TX_BUF_SIZE;
+	init_fifo(&_tx_fifo);
 }
 
 static void data_write(uint8_t data)
 {
-	write_fifo(&tx_fifo, data);
+	write_fifo(&_tx_fifo, data);
 	
 	if (data == SERIAL_ESCAPE_BYTE) {
-		write_fifo(&tx_fifo, SERIAL_NOT_ESCAPE);
+		write_fifo(&_tx_fifo, SERIAL_NOT_ESCAPE);
 	}
 }
 
 static void escaped_write(uint8_t data)
 {
-	write_fifo(&tx_fifo, SERIAL_ESCAPE_BYTE);
-	write_fifo(&tx_fifo, data);
+	write_fifo(&_tx_fifo, SERIAL_ESCAPE_BYTE);
+	write_fifo(&_tx_fifo, data);
 }
 
 void serial_encode(uint8_t pid, uint8_t psize, void *pptr)
@@ -57,7 +57,7 @@ void serial_loop(void)
 {
 	int16_t hold;
 	
-	if ((hold = read_fifo(&tx_fifo)) != -1) {
+	if ((hold = read_fifo(&_tx_fifo)) != -1) {
 		serial_send_byte((uint8_t) hold);
 	}
 }

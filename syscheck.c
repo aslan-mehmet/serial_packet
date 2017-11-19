@@ -1,7 +1,15 @@
-#include <stdlib.h>
 #include <stdint.h>
-#include <stdio.h>
-
+/**
+ * @file syscheck.c
+ * @author Mehmet ASLAN
+ * @date November 19, 2017
+ * @copyright Gnu General Public License Version 3 or Later
+ * @brief
+ * Check your system so variable representations same with microcontroller\n
+ * WHY BOTHER THIS MUCH?\n
+ * whole purpose of this lib directly sending what is on the memory of the microcontroller\n
+ * without additional logic 
+ */
 int8_t sys_check(void)
 {
 	/* check */
@@ -56,15 +64,3 @@ int8_t sys_check(void)
 	/* also memory allows byte access */
 	return 0;
 }
-
-int main(void)
-{
-	if (sys_check()) {
-		puts("unknown system gotta implement parser");
-	} else {
-		puts("hunky dory");
-	}
-
-	return 0;
-}
-
