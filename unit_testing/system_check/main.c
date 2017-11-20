@@ -21,9 +21,7 @@ int8_t sys_check(void)
 
 
 	/* 2's complement */
-	u32 = 100;
-	u32 ^= 0xffffffff;
-	u32 += 1;       
+	u32 = 0xffffff9c;
 
 	i32 = -100;
 	uint8_t *t = (uint8_t *) &i32;
