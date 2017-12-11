@@ -162,15 +162,18 @@ static void process_received_byte(uint8_t byt)
 
 void serial_loop(void)
 {
-	int16_t hold;
-	
-	if ((hold = read_fifo(&_tx_fifo)) != -1) {
-		serial_send_byte((uint8_t) hold);
-	}
+	int16_t hold_r = -1;
+	int16_t hold_t = -1;
 
-	if ((hold = read_fifo(&_rx_fifo)) != -1) {
-		process_received_byte((uint8_t) hold);
-	}
+	do {
+		if ((hold_t = read_fifo(&_tx_fifo)) != -1) {
+			serial_send_byte((uint8_t) hold_t);
+		}
+
+		if ((hold_r = read_fifo(&_rx_fifo)) != -1) {
+			process_received_byte((uint8_t) hold_r);
+		}
+	} while (hold_r != -1 || hold_t != -1);
 
 }
 
