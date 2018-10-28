@@ -56,11 +56,12 @@ int8_t serial_packet_init(void);
  * @brief packages data w/ given parameters and puts into tx buffer
  */
 void serial_packet_encode(uint8_t payload_id, uint8_t payload_size, void *payload_ptr);
-/** @brief same as serial_encode, wait untils all data sent */
-void serial_packet_encode_poll(uint8_t pid, uint8_t psize, void *pptr);
 
 /** @brief when hardware received byte, pass w/ this function to serial packet */
 void serial_packet_read(uint8_t byt);
+
+void serial_packet_flush_tx_buf(void);
+void serial_packet_flush_rx_buf(void);
 /**
  * @brief
  * put this into your main loop\n

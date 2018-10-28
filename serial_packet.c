@@ -140,7 +140,7 @@ void serial_packet_encode(uint8_t pid, uint8_t psize, void *pptr)
 	escaped_write(SERIAL_PACKET_STOP);
 }
 
-static void serial_packet_flush_tx_buf(void)
+void serial_packet_flush_tx_buf(void)
 {
 	int16_t hold = -1;
 
@@ -149,11 +149,6 @@ static void serial_packet_flush_tx_buf(void)
         }
 }
 
-void serial_packet_encode_poll(uint8_t pid, uint8_t psize, void *pptr)
-{
-        serial_packet_encode(pid, psize, pptr);
-        serial_packet_flush_tx_buf();
-}
 /*
  * at this point all escaped chars, start stop removed
  * only content exist, pieces identified with their locations
@@ -229,7 +224,7 @@ static void process_received_byte(uint8_t byt)
 	}
 }
 
-static void serial_packet_flush_rx_buf(void)
+void serial_packet_flush_rx_buf(void)
 {
         int16_t hold = -1;
 
