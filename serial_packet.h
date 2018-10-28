@@ -16,6 +16,13 @@
 #define __SERIAL_PACKET_H
 
 #include <stdint.h>
+
+#define SERIAL_PACKET_ESCAPE_BYTE ((uint8_t) 0x5c)
+#define SERIAL_PACKET_START ((uint8_t) 0x01)
+#define SERIAL_PACKET_STOP ((uint8_t) 0x02)
+/* if serial_escape_byte occured in data content, state not mean to escaped */
+#define SERIAL_PACKET_NOT_ESCAPE ((uint8_t) 0x03)
+
 /* @brief only change this values */
 #define SERIAL_PACKET_MAX_PAYLOAD_SIZE 10
 #define SERIAL_PACKET_MAX_PACKET_COUNT 3
