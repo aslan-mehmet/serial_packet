@@ -3,7 +3,6 @@
 SRC_FILES="../fifo.c ../serial_packet.c"
 
 testSourceFiles="\
-is_little_endian.c \
 encode.c \
 decode.c"
 
