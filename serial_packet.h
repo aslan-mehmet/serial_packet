@@ -58,7 +58,7 @@
  * @attention
  * rx tx buffers size user settable via macros
  */
-int8_t serial_packet_init(void);
+void serial_packet_init(void);
 /**
  * @brief packages data w/ given parameters and puts into tx buffer
  */

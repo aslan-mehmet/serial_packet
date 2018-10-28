@@ -30,60 +30,7 @@ static uint16_t _content_iteration = 0;
 static uint8_t _content_started = 0;
 static uint8_t _escape_byte_received = 0;
 
-static int8_t sys_check(void)
-{
-	/* check */
-	/* size */
-	uint32_t u32;
-	float f;
-	int32_t i32;
-	uint8_t *p = (uint8_t *) &u32;
-
-        if (sizeof(u32) != 4) { /* something really wrong */
-		return -1;
-	}
-
-	if (sizeof(f) != 4) {
-		return -2;
-	}
-
-
-	/* 2's complement */
-       	u32 = 0xffffff9c;
-
-	i32 = -100;
-	uint8_t *t = (uint8_t *) &i32;
-	for (int i = 0; i < 4; ++i) {
-		if (p[i] != t[i]) {
-			return -3;
-		}
-	}
-
-	/* little endian */
-	u32 = 0x12345678;
-	uint8_t little[4] = {0x78, 0x56, 0x34, 0x12};
-	for (int i = 0; i < 4; ++i) {
-		if (little[i] != p[i]) {
-			return -4;
-		}
-	}
-
-	/* decimal number representations */
-	f = -248.75;
-	u32 = 0xc378c000; /* ieee 754 std */
-	uint8_t *fp = (uint8_t *) &f;
-
-	for (int i = 0; i < 4; ++i) {
-		if (fp[i] != p[i]) {
-			return -5;
-		}
-	}
-
-	/* also memory allows byte access */
-	return 0;
-}
-
-int8_t serial_packet_init(void)
+void serial_packet_init(void)
 {
 	_tx_fifo.buf = _tx_buf;
 	_tx_fifo.size = SERIAL_PACKET_TX_BUF_SIZE;
@@ -92,9 +39,8 @@ int8_t serial_packet_init(void)
 	_rx_fifo.buf = _rx_buf;
 	_rx_fifo.size = SERIAL_PACKET_RX_BUF_SIZE;
 	init_fifo(&_rx_fifo);
-
-        return sys_check();
 }
+
 /* in case data equals escape char in payload, mark not mean to be escaped */
 static void data_write(uint8_t data)
 {
