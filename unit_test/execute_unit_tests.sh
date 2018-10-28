@@ -3,6 +3,7 @@
 SRC_FILES="../fifo.c ../serial_packet.c"
 
 testSourceFiles="\
+fifo_buffer.c \
 encode.c \
 decode.c"
 
