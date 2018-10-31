@@ -16,31 +16,41 @@ union VARS {
         double d;
 };
 
-
-uint8_t encoded_data[9];
+uint16_t p;
+uint8_t pid;
+uint8_t psize;
 
 int main(void)
 {
-        uint16_t payload = 0x1234;
+	uint8_t encoded_data[9];
+	uint16_t payload = 0x1234;
+	uint8_t payload_id = 0x16;
+	uint8_t *payload_array = (uint8_t *) (&payload);
+	uint8_t payload_size = (uint8_t) sizeof(payload);
+	uint8_t checksum = payload_array[0] ^ payload_array[1];
+
+	p = payload;
+	pid = payload_id;
+	psize = payload_size; 
 
         // start sequence
         encoded_data[0] = SERIAL_PACKET_ESCAPE_BYTE;
         encoded_data[1] = SERIAL_PACKET_START;
 
-        assert(0x16 != SERIAL_PACKET_ESCAPE_BYTE);
-        encoded_data[2] = 0x16; // payload id
+        assert(payload_id != SERIAL_PACKET_ESCAPE_BYTE);
+        encoded_data[2] = payload_id;
 
-        assert(2 != SERIAL_PACKET_ESCAPE_BYTE);
-        encoded_data[3] = 2; // payload size
+        assert(payload_size != SERIAL_PACKET_ESCAPE_BYTE);
+        encoded_data[3] = payload_size;
 
-        // payload 0x1234
-        assert(0x34 != SERIAL_PACKET_ESCAPE_BYTE);
-        encoded_data[4] = 0x34;
-        assert(0x12 != SERIAL_PACKET_ESCAPE_BYTE);
-        encoded_data[5] = 0x12;
+	assert(payload_size == 2);
+        assert(payload_array[0] != SERIAL_PACKET_ESCAPE_BYTE);
+        encoded_data[4] = payload_array[0];
+        assert(payload_array[1] != SERIAL_PACKET_ESCAPE_BYTE);
+        encoded_data[5] = payload_array[1];
 
-        assert((0x12 ^ 0x34) != SERIAL_PACKET_ESCAPE_BYTE);
-        encoded_data[6] = (0x12 ^ 0x34); // checksum
+        assert(checksum != SERIAL_PACKET_ESCAPE_BYTE);
+        encoded_data[6] = checksum;
 
         // stop sequence
         encoded_data[7] = SERIAL_PACKET_ESCAPE_BYTE;
@@ -65,12 +75,12 @@ void serial_packet_handler(uint8_t payload_id, uint8_t payload_size
                 safe_memory_copy(&var.u8, payload, payload_size);
         }
 
-        if (payload_id != 0x16)
+        if (payload_id != pid)
                 exit(1);
 
-        if (payload_size != 2)
+        if (payload_size != psize)
                 exit(2);
 
-        if (var.u16 != 0x1234)
+        if (var.u16 != p)
                 exit(3);
 }

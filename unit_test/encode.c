@@ -8,32 +8,36 @@ uint8_t encoded_data[9];
 int main(void)
 {
         uint16_t payload = 0x1234;
+	uint8_t payload_id = 0x16;
+	uint8_t *payload_array = (uint8_t *) (&payload);
+	uint8_t payload_size = (uint8_t) sizeof(payload);
+	uint8_t checksum = payload_array[0] ^ payload_array[1]; 
 
         // start sequence
         encoded_data[0] = SERIAL_PACKET_ESCAPE_BYTE;
         encoded_data[1] = SERIAL_PACKET_START;
 
-        assert(0x16 != SERIAL_PACKET_ESCAPE_BYTE);
-        encoded_data[2] = 0x16; // payload id
+        assert(payload_id != SERIAL_PACKET_ESCAPE_BYTE);
+        encoded_data[2] = payload_id;
 
-        assert(2 != SERIAL_PACKET_ESCAPE_BYTE);
-        encoded_data[3] = 2; // payload size
+        assert(payload_size != SERIAL_PACKET_ESCAPE_BYTE);
+        encoded_data[3] = payload_size;
 
-        // payload 0x1234
-        assert(0x34 != SERIAL_PACKET_ESCAPE_BYTE);
-        encoded_data[4] = 0x34;
-        assert(0x12 != SERIAL_PACKET_ESCAPE_BYTE);
-        encoded_data[5] = 0x12;
+	assert(payload_size == 2);
+        assert(payload_array[0] != SERIAL_PACKET_ESCAPE_BYTE);
+        encoded_data[4] = payload_array[0];
+        assert(payload_array[1] != SERIAL_PACKET_ESCAPE_BYTE);
+        encoded_data[5] = payload_array[1];
 
-        assert((0x12 ^ 0x34) != SERIAL_PACKET_ESCAPE_BYTE);
-        encoded_data[6] = (0x12 ^ 0x34); // checksum
+        assert(checksum != SERIAL_PACKET_ESCAPE_BYTE);
+        encoded_data[6] = checksum;
 
         // stop sequence
         encoded_data[7] = SERIAL_PACKET_ESCAPE_BYTE;
         encoded_data[8] = SERIAL_PACKET_STOP;
 
         serial_packet_init();
-        serial_packet_encode(0x16, 2, &payload);
+        serial_packet_encode(payload_id, payload_size, &payload);
         serial_packet_flush_tx_buf();
 
         return 0;
