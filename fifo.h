@@ -50,6 +50,10 @@ void fifo_init(fifo *f, uint8_t *buf, uint16_t buf_size);
  */
 int8_t fifo_write(fifo *f, uint8_t data);
 /**
+ * @retval number of written bytes
+ */
+uint16_t fifo_write_buffer(fifo *f, uint8_t *buf, uint16_t buf_size);
+/**
  * @retval -1 if empty
  * @retval uint8_t data read
  */

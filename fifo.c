@@ -55,6 +55,13 @@ int8_t fifo_write(fifo *f, uint8_t data)
 	return 0;
 }
 
+uint16_t fifo_write_buffer(fifo *f, uint8_t *buf, uint16_t buf_size)
+{
+	for (uint16_t i = 0; i < buf_size; i++)
+		if (fifo_write(f, buf[i]))
+			return i;
+}
+
 /* return neg if empty */
 int16_t fifo_read(fifo *f)
 {
