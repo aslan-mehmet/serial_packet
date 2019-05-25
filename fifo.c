@@ -14,8 +14,10 @@
  */
 #include "fifo.h"
 
-void init_fifo(fifo *f)
+void init_fifo(fifo *f, uint8_t *buf, uint16_t buf_size)
 {
+	f->buf = buf;
+	f->size = buf_size;
 	f->head = f->tail = 0;
 }
 

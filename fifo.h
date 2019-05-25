@@ -20,16 +20,10 @@
  * @brief
  * fifo data type for internal operations\n
  * allows to create multiple fifos in same project
- * @attention
- * buf pointer and its size must be set by user\n
- * before doing any operation
  */
 typedef struct{
 	/**
-	 * @brief pointer to staticly created buffer 
-	 * @attention
-	 * buf pointer and its size must be set by user\n
-	 * before doing any operation
+	 * @brief pointer to staticly created buffer
 	 */
 	uint8_t *buf;
 	/**
@@ -39,20 +33,17 @@ typedef struct{
 	 * len = size -1\n
 	 * like null terminated string\n
 	 * why ? --> cause head index always empty
-	 * @attention
-	 * buf pointer and its size must be set by user\n
-	 * before doing any operation
 	 */
 	uint16_t size;
-	/** @brief dont care about this as user */
+	/** @brief dont care about these as user */
 	uint16_t head, tail;
 }fifo;
 
 /** 
- * @brief do fifo data type obligations then call first
- * @attention look fifo data type, set manually
+ * @brief create a fifo struct and uint8_t buffer. initialize with this function.
+ * @attention this function must be called first. actual length of the buffer is 'sizeof(buf)-1'.
  */
-void init_fifo(fifo *f);
+void init_fifo(fifo *f, uint8_t *buf, uint16_t buf_size);
 /**
  * @retval -1 if full. data not written 
  * @retval 0 success

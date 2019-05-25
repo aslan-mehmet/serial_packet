@@ -6,9 +6,7 @@ int main(void)
         uint8_t buf[10];
         fifo my_fifo;
 
-        my_fifo.buf = buf;
-        my_fifo.size = sizeof(buf);
-        init_fifo(&my_fifo);
+        init_fifo(&my_fifo, buf, sizeof(buf));
 
         for (int i = 1; i <= 100; ++i) {
                 int ret = write_fifo(&my_fifo, (uint8_t) i);

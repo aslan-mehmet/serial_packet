@@ -32,13 +32,8 @@ static uint8_t _escape_byte_received = 0;
 
 void serial_packet_init(void)
 {
-	_tx_fifo.buf = _tx_buf;
-	_tx_fifo.size = SERIAL_PACKET_TX_BUF_SIZE;
-	init_fifo(&_tx_fifo);
-
-	_rx_fifo.buf = _rx_buf;
-	_rx_fifo.size = SERIAL_PACKET_RX_BUF_SIZE;
-	init_fifo(&_rx_fifo);
+	init_fifo(&_tx_fifo, _tx_buf, sizeof(_tx_buf));
+	init_fifo(&_rx_fifo, _rx_buf, sizeof(_rx_buf));
 }
 
 /* in case data equals escape char in payload, mark not mean to be escaped */
