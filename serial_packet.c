@@ -32,25 +32,25 @@ static uint8_t _escape_byte_received = 0;
 
 void serial_packet_init(void)
 {
-	init_fifo(&_tx_fifo, _tx_buf, sizeof(_tx_buf));
-	init_fifo(&_rx_fifo, _rx_buf, sizeof(_rx_buf));
+	fifo_init(&_tx_fifo, _tx_buf, sizeof(_tx_buf));
+	fifo_init(&_rx_fifo, _rx_buf, sizeof(_rx_buf));
 }
 
 /* in case data equals escape char in payload, mark not mean to be escaped */
 static void data_write(uint8_t data)
 {
-	write_fifo(&_tx_fifo, data);
+	fifo_write(&_tx_fifo, data);
 
 	if (data == SERIAL_PACKET_ESCAPE_BYTE) {
-		write_fifo(&_tx_fifo, SERIAL_PACKET_NOT_ESCAPE);
+		fifo_write(&_tx_fifo, SERIAL_PACKET_NOT_ESCAPE);
 	}
 }
 
 /* data written with escape char, have special meaning */
 static void escaped_write(uint8_t data)
 {
-	write_fifo(&_tx_fifo, SERIAL_PACKET_ESCAPE_BYTE);
-	write_fifo(&_tx_fifo, data);
+	fifo_write(&_tx_fifo, SERIAL_PACKET_ESCAPE_BYTE);
+	fifo_write(&_tx_fifo, data);
 }
 
 /* packages nicely, puts into tx buf */
@@ -79,7 +79,7 @@ void serial_packet_flush_tx_buf(void)
 {
 	int16_t hold = -1;
 
-        while((hold = read_fifo(&_tx_fifo)) != -1) {
+        while((hold = fifo_read(&_tx_fifo)) != -1) {
                 serial_packet_print((uint8_t) hold);
         }
 }
@@ -163,7 +163,7 @@ void serial_packet_flush_rx_buf(void)
 {
         int16_t hold = -1;
 
-        while((hold = read_fifo(&_rx_fifo)) != -1) {
+        while((hold = fifo_read(&_rx_fifo)) != -1) {
 		process_received_byte((uint8_t) hold);
         }
 }
@@ -176,7 +176,7 @@ void serial_packet_flush(void)
 
 void serial_packet_read(uint8_t byt)
 {
-	write_fifo(&_rx_fifo, byt);
+	fifo_write(&_rx_fifo, byt);
 }
 
 /* byte access memory copy */

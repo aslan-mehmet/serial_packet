@@ -43,18 +43,18 @@ typedef struct{
  * @brief create a fifo struct and uint8_t buffer. initialize with this function.
  * @attention this function must be called first. actual length of the buffer is 'sizeof(buf)-1'.
  */
-void init_fifo(fifo *f, uint8_t *buf, uint16_t buf_size);
+void fifo_init(fifo *f, uint8_t *buf, uint16_t buf_size);
 /**
  * @retval -1 if full. data not written 
  * @retval 0 success
  */
-int8_t write_fifo(fifo *f, uint8_t data);
+int8_t fifo_write(fifo *f, uint8_t data);
 /**
  * @retval -1 if empty
  * @retval uint8_t data read
  */
-int16_t read_fifo(fifo *f);
+int16_t fifo_read(fifo *f);
 /** @brief empty all data in fifo */
-void flush_fifo(fifo *f);
+void fifo_flush(fifo *f);
 
 #endif	/* __FIFO_H */

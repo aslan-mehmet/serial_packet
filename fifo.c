@@ -9,12 +9,12 @@
  * create fifo data type\n
  * create a buffer\n
  * set fifo size and buf\n
- * init w/ init_fifo\n
+ * init w/ fifo_init\n
  * done
  */
 #include "fifo.h"
 
-void init_fifo(fifo *f, uint8_t *buf, uint16_t buf_size)
+void fifo_init(fifo *f, uint8_t *buf, uint16_t buf_size)
 {
 	f->buf = buf;
 	f->size = buf_size;
@@ -39,7 +39,7 @@ static int8_t is_fifo_full(fifo *f)
 	return 0;
 }
 
-int8_t write_fifo(fifo *f, uint8_t data)
+int8_t fifo_write(fifo *f, uint8_t data)
 {       
 	if (is_fifo_full(f)) {
 		return -1;
@@ -56,7 +56,7 @@ int8_t write_fifo(fifo *f, uint8_t data)
 }
 
 /* return neg if empty */
-int16_t read_fifo(fifo *f)
+int16_t fifo_read(fifo *f)
 {
         /*
 	 * as said head empty
@@ -75,7 +75,7 @@ int16_t read_fifo(fifo *f)
 	return data;
 }
 
-void flush_fifo(fifo *f)
+void fifo_flush(fifo *f)
 {	
 	/* so length of snake 0 */
 	f->tail = f->head;
