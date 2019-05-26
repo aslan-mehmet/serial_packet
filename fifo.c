@@ -60,6 +60,7 @@ uint16_t fifo_write_buffer(fifo *f, uint8_t *buf, uint16_t buf_size)
 	for (uint16_t i = 0; i < buf_size; i++)
 		if (fifo_write(f, buf[i]))
 			return i;
+	return buf_size;
 }
 
 /* return neg if empty */
